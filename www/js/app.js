@@ -4,23 +4,19 @@
  * and open the template in the editor.
  */
 
-var Onsen = ons.bootstrap('Onsen', ['onsen', 'weatherModule', 'ngSanitize']);
+var Onsen = ons.bootstrap('Onsen', ['onsen']);
+
+//var Onsen = ons.bootstrap('Onsen', ['onsen', 'weatherModule', 'ngSanitize']);
 
 //var Onsen = angular.module('Onsen', ['onsen', 'weatherModule', 'ngSanitize']);
 
 Onsen.config(['$httpProvider', function($httpProvider) {
-        // ...www.worklife.com.ar
-
         // delete header from client:
         // http://stackoverflow.com/questions/17289195/angularjs-post-data-to-external-rest-api
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
-        //$httpProvider.interceptors.push('xmlHttpInterceptor');
     }]);
 
-//Onsen.config(['$httpProvider', function($httpProvider) {
-//        $httpProvider.interceptors.push('xmlHttpInterceptor');
-//    }]);
 
 Onsen.filter('range', function() {
     return function(input, total) {
