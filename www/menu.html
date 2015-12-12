@@ -27,6 +27,7 @@
 
 
         <ons-list-item ng-controller="clienteCtrl"
+                       ng-show="isLogueado()"
                        modifier="tappable" class="list__item__line-height"
                        ng-click="clientes();
                                app.slidingMenu.close();">
