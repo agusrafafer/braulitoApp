@@ -1,0 +1,85 @@
+<ons-page style="background-color: white">
+
+    <ons-list>
+
+        <ons-list-item 
+            modifier="tappable" class="list__item__line-height"
+            onclick="app.slidingMenu.setMainPage('inicio.html');
+                        app.slidingMenu.close();">
+            <i class="fa fa-home fa-lg" style="color: #666"></i>
+            &nbsp; Inicio
+        </ons-list-item>
+
+        <ons-list-item ng-controller="usuarioCtrl"
+                       ng-hide="isLogueado()"
+                       modifier="tappable" class="list__item__line-height"
+                       onclick="app.navigator.pushPage('login.html');
+                                   app.slidingMenu.close();">
+            <i class="fa ion-log-in fa-lg" style="color: #666"></i>
+            &nbsp; Login
+        </ons-list-item>
+
+        <ons-list-header ng-controller="usuarioCtrl"
+                         ng-show="isLogueado()"
+                         class="list__header ons-list-header-inner">
+            Mi cuenta
+        </ons-list-header>
+
+
+        <ons-list-item ng-controller="clienteCtrl"
+                       ng-show="isLogueado()"
+                       modifier="tappable" class="list__item__line-height"
+                       ng-click="clientes();
+                               app.slidingMenu.close();">
+            <i class="fa ion-person-stalker fa-lg" style="color: #666"></i>
+            &nbsp; Clientes
+        </ons-list-item>
+
+        <ons-list-item ng-controller="productoCtrl"
+                       ng-show="isLogueado()" 
+                       modifier="tappable" class="list__item__line-height"
+                       ng-click="productos();
+                           app.slidingMenu.close();">
+            <i class="fa ion-bag fa-lg" style="color: #666"></i>
+            &nbsp; Productos
+        </ons-list-item>
+
+        <ons-list-item ng-controller="proveedorCtrl"
+                       ng-show="isLogueado()"
+                       modifier="tappable" class="list__item__line-height"
+                       ng-click="proveedores();
+                               app.slidingMenu.close();">
+            <i class="fa ion-arrow-graph-up-right fa-lg" style="color: #666"></i>
+            &nbsp; Proveedores
+        </ons-list-item>
+
+        <ons-list-item ng-controller="usuarioCtrl"
+                       ng-show="isLogueado()"
+                       modifier="tappable" class="list__item__line-height"
+                       ng-click="proximamente();
+                               app.slidingMenu.close();">
+            <i class="fa ion-clipboard fa-lg" style="color: #666"></i>
+            &nbsp; Pedidos
+        </ons-list-item>
+        
+        <ons-list-item ng-controller="usuarioCtrl"
+                       ng-show="isLogueado()"
+                       modifier="tappable" class="list__item__line-height"
+                       ng-click="proximamente();
+                               app.slidingMenu.close();">
+            <i class="fa ion-wrench fa-lg" style="color: #666"></i>
+            &nbsp; Configuraci&oacute;n
+        </ons-list-item>
+
+        <ons-list-item ng-controller="usuarioCtrl"
+                       ng-show="isLogueado()"
+                       modifier="tappable" class="list__item__line-height"
+                       ng-click="logout();
+                               app.slidingMenu.close();">
+            <i class="fa ion-log-out fa-lg" style="color: #666"></i>
+            &nbsp; Salir
+        </ons-list-item>
+
+    </ons-list>
+
+</ons-page>

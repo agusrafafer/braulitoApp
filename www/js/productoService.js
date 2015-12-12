@@ -1,0 +1,91 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+Onsen.service('productoService', function($http, $q, wsFactory) {
+    
+    this.productos = function() {
+        //defered = diferido (asincrono)
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http.get(wsFactory.url + '/com.agura.datos.producto')
+                .success(function(data) {
+                    defered.resolve(data);
+                })
+                .error(function(data, status) {
+                    defered.reject(data, status);
+                });
+
+        return promise;
+    };
+    
+    this.registrar = function(nombre, codigo, precio, fechaVto, cantidad, proveedores) {
+        //defered = diferido (asincrono)
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http.post(wsFactory.url + '/com.agura.datos.producto', {nombre: nombre, codigo: codigo, precio: precio, fechaVto: fechaVto, cant: cantidad, proveedores: proveedores})
+                .success(function(data) {
+                    defered.resolve(data);
+                })
+                .error(function(data, status) {
+                    defered.reject(data, status);
+                });
+
+        return promise;
+    };
+    
+    this.modificar = function(idProducto, nombre, codigo, precio, fechaVto, cantidad, proveedores) {
+        //defered = diferido (asincrono)
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http.post(wsFactory.url + '/com.agura.datos.producto/edit', {idProducto:idProducto, nombre: nombre, codigo: codigo, precio: precio, fechaVto: fechaVto, cant: cantidad, proveedores: proveedores})
+                .success(function(data) {
+                    defered.resolve(data);
+                })
+                .error(function(data, status) {
+                    defered.reject(data, status);
+                });
+
+        return promise;
+    };
+    
+    this.eliminar = function(idProducto) {
+        //defered = diferido (asincrono)
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http.post(wsFactory.url + '/com.agura.datos.producto/del', {idProducto: idProducto})
+                .success(function(data) {
+                    defered.resolve(data);
+                })
+                .error(function(data, status) {
+                    defered.reject(data, status);
+                });
+
+        return promise;
+    };
+    
+    this.buscar = function(texto) {
+        //defered = diferido (asincrono)
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http.get(wsFactory.url + '/com.agura.datos.producto/buscar/' + texto)
+                .success(function(data) {
+                    defered.resolve(data);
+                })
+                .error(function(data, status) {
+                    defered.reject(data, status);
+                });
+
+        return promise;
+    };
+    
+});
+
+
