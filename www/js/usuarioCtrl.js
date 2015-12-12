@@ -61,6 +61,9 @@ function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $wi
                         case 401:
                             mensaje = "No autorizado.";
                             break;
+                        default:
+                            mensaje = "No se!!!";
+                            break;
                     }
                     $scope.ons.notification.alert({
                         title: 'Info',

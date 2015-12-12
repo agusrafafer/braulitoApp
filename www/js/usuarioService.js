@@ -6,16 +6,13 @@
 
 Onsen.service('usuarioService', function($http, $q, wsFactory) {
 
-    var tipoContratacion = "";
-    var reputacionComoCli = 0;
-    var reputacionComoPro = 0;
-
     this.validarLogin = function(login, password) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/com.agura.datos.usuario/login', {usuario: login, clave: password})
+        //$http.post(wsFactory.url + '/com.agura.datos.usuario/login', {usuario: login, clave: password})
+        $http.get(wsFactory.url + '/com.agura.datos.usuario/login/' + login + '/' + password)
                 .success(function(data) {
                     defered.resolve(data);
                 })
