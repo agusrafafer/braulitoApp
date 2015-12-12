@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-var Onsen = ons.bootstrap('Onsen', ['onsen']);
+//var Onsen = ons.bootstrap('Onsen', ['onsen']);
 
-//var Onsen = ons.bootstrap('Onsen', ['onsen', 'weatherModule', 'ngSanitize']);
+var Onsen = ons.bootstrap('Onsen', ['onsen', 'weatherModule', 'ngSanitize']);
 
 //var Onsen = angular.module('Onsen', ['onsen', 'weatherModule', 'ngSanitize']);
 

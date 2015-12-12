@@ -43,7 +43,9 @@ Onsen.service('clienteService', function($http, $q, wsFactory) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/com.agura.datos.cliente', {nombre: nombre, telefono: telefono, celular: celular, domicilio: domicilio, idTipoCliente: idTipoCliente})
+        //$http.post(wsFactory.url + '/com.agura.datos.cliente', {nombre: nombre, telefono: telefono, celular: celular, domicilio: domicilio, idTipoCliente: idTipoCliente})
+        var parametros = nombre + 'çç' + telefono + 'çç' + celular + 'çç' +  domicilio + 'çç' + idTipoCliente;
+        $http.get(wsFactory.url + '/com.agura.datos.cliente/reg/' + parametros)
                 .success(function(data) {
                     defered.resolve(data);
                 })
@@ -59,7 +61,9 @@ Onsen.service('clienteService', function($http, $q, wsFactory) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/com.agura.datos.cliente/edit', {idCliente:idCliente, nombre: nombre, telefono: telefono, celular: celular, domicilio: domicilio, idTipoCliente: idTipoCliente})
+        //$http.post(wsFactory.url + '/com.agura.datos.cliente/edit', {idCliente:idCliente, nombre: nombre, telefono: telefono, celular: celular, domicilio: domicilio, idTipoCliente: idTipoCliente})
+        var parametros = idCliente + 'çç' + nombre + 'çç' + telefono + 'çç' + celular + 'çç' +  domicilio + 'çç' + idTipoCliente;
+        $http.get(wsFactory.url + '/com.agura.datos.cliente/edit/' + parametros)
                 .success(function(data) {
                     defered.resolve(data);
                 })
@@ -75,7 +79,8 @@ Onsen.service('clienteService', function($http, $q, wsFactory) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/com.agura.datos.cliente/del', {idCliente: idCliente})
+        //$http.post(wsFactory.url + '/com.agura.datos.cliente/del', {idCliente: idCliente})
+        $http.get(wsFactory.url + '/com.agura.datos.cliente/del/' + idCliente)
                 .success(function(data) {
                     defered.resolve(data);
                 })

@@ -27,7 +27,9 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/com.agura.datos.proveedor', {nombre: nombre, telefono: telefono, domicilio: domicilio})
+        //$http.post(wsFactory.url + '/com.agura.datos.proveedor', {nombre: nombre, telefono: telefono, domicilio: domicilio})
+        var parametros = nombre + 'çç' + telefono + 'çç' + domicilio;
+        $http.get(wsFactory.url + '/com.agura.datos.proveedor/reg/' + parametros)
                 .success(function(data) {
                     defered.resolve(data);
                 })
@@ -43,7 +45,9 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/com.agura.datos.proveedor/edit', {idProveedor:idProveedor, nombre: nombre, telefono: telefono, domicilio: domicilio})
+        //$http.post(wsFactory.url + '/com.agura.datos.proveedor/edit', {idProveedor:idProveedor, nombre: nombre, telefono: telefono, domicilio: domicilio})
+        var parametros = idProveedor + 'çç' + nombre + 'çç' + telefono + 'çç' + domicilio;
+        $http.get(wsFactory.url + '/com.agura.datos.proveedor/edit/' + parametros)
                 .success(function(data) {
                     defered.resolve(data);
                 })
@@ -59,7 +63,8 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/com.agura.datos.proveedor/del', {idProveedor: idProveedor})
+        //$http.post(wsFactory.url + '/com.agura.datos.proveedor/del', {idProveedor: idProveedor})
+        $http.get(wsFactory.url + '/com.agura.datos.proveedor/del/' + idProveedor)
                 .success(function(data) {
                     defered.resolve(data);
                 })
