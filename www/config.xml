@@ -4,7 +4,7 @@
         xmlns="http://www.w3.org/ns/widgets" 
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
         xmlns:gap = "http://phonegap.com/ns/1.0">
-    <name>braulitoCordova</name>
+    <name>Braulito App</name>
     <description>
         App para toma de pedidos en linea.
     </description>
@@ -46,5 +46,10 @@
     <icon src="hdpi.png" platform="android" qualifier="hdpi" />
     <icon src="xhdpi.png" platform="android" qualifier="xhdpi" />
     <icon src="xxhdpi.png" platform="android" qualifier="xxhdpi" />
+    
+    <splash src="splash-ldpi.png" platform="android" qualifier="ldpi" />
+    <splash src="splash-mdpi.png" platform="android" qualifier="mdpi" />
+    <splash src="splash-hdpi.png" platform="android" qualifier="hdpi" />
+    <splash src="splash-xhdpi.png" platform="android" qualifier="xhdpi" />
     
 </widget>
