@@ -41,11 +41,17 @@
     <feature name="InAppBrowser" />
     
     <gap:plugin name="org.apache.cordova.inappbrowser" source="npm" version="0.6.0" />
+    <gap:plugin name="org.apache.cordova.splashscreen" />
+    
+    <preference name="SplashScreen" value="screen"/>
+    <preference name="SplashScreenDelay" value="10000" />
     
     <icon src="mdpi.png" platform="android" qualifier="mdpi" />
     <icon src="hdpi.png" platform="android" qualifier="hdpi" />
     <icon src="xhdpi.png" platform="android" qualifier="xhdpi" />
     <icon src="xxhdpi.png" platform="android" qualifier="xxhdpi" />
+    
+    <gap:splash src="splash-ldpi.png" />
     
     <splash src="splash-ldpi.png" platform="android" qualifier="ldpi" />
     <splash src="splash-mdpi.png" platform="android" qualifier="mdpi" />

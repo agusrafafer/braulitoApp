@@ -1,0 +1,31 @@
+<ons-page on-device-backbutton="app.navigator.popPage()" >
+
+    <ons-toolbar>
+        <div class="left">
+            <ons-toolbar-button ng-click="app.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
+        </div>
+        <div class="center">Login Braulito App</div>
+    </ons-toolbar>
+
+
+
+    <div class="login-form content-padded" ng-controller="usuarioCtrl">
+        <form name="frmLogin" novalidate>
+            <input type="text" class="text-input--underbar"
+                   name="login"  placeholder="Usuario" 
+                   ng-model="usuario.login" required style="width: 100%;">
+
+            <input type="password" class="text-input--underbar" 
+                   name="password" placeholder="Password" 
+                   ng-model="usuario.password" required>
+            <br><br>
+            <ons-button modifier="large" class="login-button" 
+                        ng-click="validarLogin(usuario.login, usuario.password)"
+                        ng-disabled="!frmLogin.$valid"
+                        >
+                Ingresar
+            </ons-button>
+        </form>
+    </div>
+
+</ons-page>

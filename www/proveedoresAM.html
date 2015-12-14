@@ -1,0 +1,75 @@
+<ons-page on-device-backbutton="app.navigator.popPage()" ng-controller="proveedorCtrl">
+    <form name="frmProveedorAM" novalidate>
+        <ons-toolbar>
+            <div class="left">
+                <ons-toolbar-button ng-click="atrasEdicion()">
+                    <ons-icon icon="ion-arrow-left-c" style="font-size: 28px;" fixed-width="false"></ons-icon>
+                </ons-toolbar-button>
+            </div>
+            <div class="center">Proveedor</div>
+            <div class="right">
+                <ons-toolbar-button ng-click="validarEdicion()"
+                                    ng-show="frmProveedorAM.$valid">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-show="!frmProveedorAM.$valid"
+                                    ng-disabled="!frmProveedorAM.$valid">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-click="eliminar()"
+                                    ng-show="{{getProveedorSeleccionado().idProveedor !== 0}}">
+                    <ons-icon icon="ion-trash-a" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+            </div>
+
+        </ons-toolbar>
+
+        <ons-list modifier="inset" style="margin-top: 10px">
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" style="width: 100%" 
+                       placeholder="Nombre proveedor" ng-model="getProveedorSeleccionado().proveedor"
+                       required name="nombre" ng-minlength="1" ng-maxlength="45"
+                       maxlength="45" 
+                       />
+                <div ng-show="frmProveedorAM.nombre.$error.maxlength || frmProveedorAM.nombre.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    El nombre del proveedor debe tener entre 1 y 45 letras
+                </div>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" 
+                       placeholder="Telefono" ng-model="getProveedorSeleccionado().telefono"
+                       name="telefono" ng-minlength="1" ng-maxlength="13"
+                       maxlength="13"
+                       />
+                <div ng-show="frmProveedorAM.telefono.$error.maxlength || frmProveedorAM.telefono.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    El telefono debe tener entre 1 y 13 digitos
+                </div>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" style="width: 100%"  
+                       placeholder="Domicilio" ng-model="getProveedorSeleccionado().domicilio"
+                       required name="domicilio" ng-minlength="1" ng-maxlength="250"
+                       maxlength="250"
+                       />
+            </ons-list-item>
+
+        </ons-list>
+
+    </form>
+</ons-page>

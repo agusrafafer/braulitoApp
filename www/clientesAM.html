@@ -1,0 +1,102 @@
+<ons-page on-device-backbutton="app.navigator.popPage()" ng-controller="clienteCtrl">
+    <form name="frmClienteAM" novalidate>
+        <ons-toolbar>
+            <div class="left">
+                <ons-toolbar-button ng-click="atrasEdicion()">
+                    <ons-icon icon="ion-arrow-left-c" style="font-size: 28px;" fixed-width="false"></ons-icon>
+                </ons-toolbar-button>
+            </div>
+            <div class="center">Cliente</div>
+            <div class="right">
+                <ons-toolbar-button ng-click="validarEdicion()"
+                                    ng-show="frmClienteAM.$valid">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-show="!frmClienteAM.$valid"
+                                    ng-disabled="!frmClienteAM.$valid">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-click="eliminar()"
+                                    ng-show="{{getClienteSeleccionado().idCliente !== 0}}">
+                    <ons-icon icon="ion-trash-a" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+            </div>
+
+        </ons-toolbar>
+
+        <ons-list modifier="inset" style="margin-top: 10px">
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" style="width: 100%" 
+                       placeholder="Nombre cliente" ng-model="getClienteSeleccionado().cliente"
+                       required name="nombre" ng-minlength="1" ng-maxlength="100"
+                       maxlength="100" 
+                       />
+                <div ng-show="frmClienteAM.nombre.$error.maxlength || frmClienteAM.nombre.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    El nombre del cliente debe tener entre 1 y 100 letras
+                </div>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" 
+                       placeholder="Celular" ng-model="getClienteSeleccionado().celular"
+                       name="celular" ng-minlength="1" ng-maxlength="13"
+                       maxlength="13"
+                       />
+                <div ng-show="frmClienteAM.celular.$error.maxlength || frmClienteAM.celular.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    El celular debe tener entre 1 y 13 digitos
+                </div>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" 
+                       placeholder="Telefono" ng-model="getClienteSeleccionado().telefono"
+                       name="telefono" ng-minlength="1" ng-maxlength="13"
+                       maxlength="13"
+                       />
+                <div ng-show="frmClienteAM.celular.$error.maxlength || frmClienteAM.celular.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    El telefono debe tener entre 1 y 13 digitos
+                </div>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" style="width: 100%"  
+                       placeholder="Domicilio" ng-model="getClienteSeleccionado().domicilio"
+                       required name="domicilio" ng-minlength="1" ng-maxlength="250"
+                       maxlength="250"
+                       />
+            </ons-list-item>
+
+            <ons-list-item modifier="chevron" ng-click="tiposCliente()">
+                <ons-icon icon="fa ion-thermometer fa-lg" style="font-size: 14px;">&nbsp;Tipo</ons-icon>
+                <span class="list-item-note lucent">{{getClienteSeleccionado() === '' ? (getTipoClienteSeleccionado() === '' ? 'Ninguno' : getTipoClienteSeleccionado().tipo) : getClienteSeleccionado().idTipoCliente.tipo}}</span>
+            </ons-list-item>
+
+
+        </ons-list>
+
+
+        <ons-dialog cancelable="true" var="dialogFiltroTC">
+            <ons-list>
+                <ons-list-item modifier="tappable" ng-repeat="tc in getTiposCliente()" ng-click="setTipoClienteSeleccionado($index)">
+                    {{tc.tipo}}
+                </ons-list-item>
+            </ons-list>
+        </ons-dialog>
+
+    </form>
+</ons-page>

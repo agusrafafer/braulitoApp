@@ -136,6 +136,10 @@ function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $wi
     cargarNoticias();
 
     function cargarNoticias() {
+        var ancho = ($($window).width() / 2) - 150;
+        console.log(ancho);
+        ancho = ancho + "px";
+        $("#clima").css({"margin-left": ancho});
         noticiaService.noticiasRss().success(function(data) {
             var x2js = new X2JS();
             if ($scope.noticias === "") {

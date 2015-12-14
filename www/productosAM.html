@@ -1,0 +1,131 @@
+<ons-page on-device-backbutton="app.navigator.popPage()" ng-controller="productoCtrl">
+    <form name="frmProductoAM" novalidate>
+        <ons-toolbar>
+            <div class="left">
+                <ons-toolbar-button ng-click="atrasEdicion()">
+                    <ons-icon icon="ion-arrow-left-c" style="font-size: 28px;" fixed-width="false"></ons-icon>
+                </ons-toolbar-button>
+            </div>
+            <div class="center">Producto</div>
+            <div class="right">
+                <ons-toolbar-button ng-click="validarEdicion()"
+                                    ng-show="frmProductoAM.$valid">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-show="!frmProductoAM.$valid"
+                                    ng-disabled="!frmProductoAM.$valid">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-click="eliminar()"
+                                    ng-show="{{getProductoSeleccionado().idProducto !== 0}}">
+                    <ons-icon icon="ion-trash-a" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+            </div>
+
+        </ons-toolbar>
+
+        <ons-list modifier="inset" style="margin-top: 10px">
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" style="width: 100%" 
+                       placeholder="Nombre producto" ng-model="getProductoSeleccionado().producto"
+                       required name="nombre" ng-minlength="1" ng-maxlength="150"
+                       maxlength="45" 
+                       />
+                <div ng-show="frmProductoAM.nombre.$error.maxlength || frmProductoAM.nombre.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    El nombre del producto debe tener entre 1 y 150 letras
+                </div>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" 
+                       placeholder="Precio" ng-model="getProductoSeleccionado().precio"
+                       name="precio" ng-minlength="1" ng-maxlength="12"
+                       maxlength="12"
+                       />
+                <div ng-show="frmProductoAM.precio.$error.maxlength || frmProductoAM.precio.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    El precio debe tener entre 1 y 12 digitos
+                </div>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="text" class="text-input text-input--transparent" style="width: 100%"  
+                       placeholder="Codigo" ng-model="getProductoSeleccionado().codigo"
+                       name="codigo" ng-minlength="1" ng-maxlength="45"
+                       maxlength="45"
+                       />
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="date" class="text-input text-input--transparent" style="width: 100%"  
+                       placeholder="dd-MM-yyyy" ng-model="getProductoSeleccionado().fechaVencimiento"
+                       name="vto"/>
+            </ons-list-item>
+
+            <ons-list-item>
+                <input type="number" class="text-input text-input--transparent" required
+                       placeholder="Cantidad" ng-model="getProductoSeleccionado().stockCollection[getProductoSeleccionado().stockCollection.length - 1].cantidad"
+                       name="cantidad" ng-minlength="1" ng-maxlength="5"
+                       maxlength="5"
+                       />
+                <div ng-show="frmProductoAM.cantidad.$error.maxlength || frmProductoAM.cantidad.$error.minlength" style="font-size: small">
+                    <i style="color: #ff3333" class="ion-information-circled text-danger"></i> 
+                    La cantidad debe tener entre 1 y 5 digitos
+                </div>
+            </ons-list-item>
+
+            <ons-list-item modifier="chevron" ng-click="promptBuscarProveedor()">
+                <ons-icon icon="fa ion-arrow-graph-up-right fa-lg" style="font-size: 14px;">&nbsp;Proveedores</ons-icon>
+                <span class="list-item-note lucent">{{getProductoSeleccionado().proveedoresSel.length}} prov. sel.</span>
+            </ons-list-item>
+
+        </ons-list>
+
+        <ons-dialog cancelable="true" var="dialogFiltroProveedor">
+            <ons-toolbar inline>
+                <div class="center">
+                    Proveedores
+                </div>
+            </ons-toolbar>
+
+            <ons-list ng-show="(getProveedores().length !== 0)">
+                <ons-list-item modifier="tappable" 
+                               ng-repeat="p in getProveedores()" 
+                               >
+                    <label class="checkbox checkbox--list-item">
+                        <input type="checkbox"
+                               ng-checked="getProductoSeleccionado().proveedoresSel.indexOf(p) > -1"
+                               ng-click="setProveedorSeleccionado($index)">
+                        <div class="checkbox__checkmark checkbox--list-item__checkmark"></div>
+                        {{p.proveedor}}
+                    </label>
+                </ons-list-item>
+            </ons-list>
+            <ons-list ng-show="(getProveedores().length === 0)">
+                <ons-list-item modifier="tappable" ng-click="dialogFiltroProveedor.hide()">
+                    No se encontraron resultados!
+                </ons-list-item>
+            </ons-list>
+
+            <p style="text-align: center;">
+            <ons-button ng-click="dialogFiltroProveedor.hide()">
+                Ok
+            </ons-button>
+            </p>
+        </ons-dialog>
+
+    </form>
+</ons-page>
