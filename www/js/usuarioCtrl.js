@@ -137,7 +137,6 @@ function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $wi
 
     function cargarNoticias() {
         var ancho = ($($window).width() / 2) - 150;
-        console.log(ancho);
         ancho = ancho + "px";
         $("#clima").css({"margin-left": ancho});
         noticiaService.noticiasRss().success(function(data) {
