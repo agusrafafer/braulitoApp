@@ -15,9 +15,6 @@
     <content src="index.html" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1.0.0" />
     <preference name="fullscreen" value="false" />
-    <preference name="webviewbounce" value="false" />
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="UIWebViewBounce" value="false" />
     <allow-navigation href="http://*/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
