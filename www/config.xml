@@ -14,7 +14,7 @@
     <access origin="*"/>
     <content src="index.html" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1.0.0" />
-    <preference name="fullscreen" value="false" />
+    <preference name="fullscreen" value="true" />
     <allow-navigation href="http://*/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
