@@ -43,12 +43,22 @@ Onsen.factory('tipoClienteFactory', function() {
     };
 });
 
+Onsen.factory('pedidoFactory', function() {
+    return {
+        items: [],
+        seleccionado: "",
+        textoBuscado: "",
+        detallesSel: [],
+        clienteSel: "",
+        vieneDePedido: 0
+    };
+});
 
 
 Onsen.factory('wsFactory', function() {
     return {
-        url: "http://braulito-agura.rhcloud.com/braulito/webresources"
-        //url: "http://localhost:8084/braulito/webresources"
+        //url: "http://braulito-agura.rhcloud.com/braulito/webresources"
+        url: "http://localhost:8084/braulito/webresources"
     };
 });
 

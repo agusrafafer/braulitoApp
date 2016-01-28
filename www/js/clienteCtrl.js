@@ -5,7 +5,7 @@
  */
 
 
-function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory, clienteService) {
+function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory, clienteService, pedidoFactory) {
 
     $scope.crearModalEnRunTime = function() {
         var elm = $("<ons-modal var=modal><ons-icon icon='ion-load-c' spin='true'></ons-icon><br><br>Aguarde...</ons-modal>");
@@ -71,6 +71,22 @@ function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory,
         $scope.app.navigator.pushPage('clientesAM.html');
     };
 
+    $scope.getVieneDePedido = function() {
+      return pedidoFactory.vieneDePedido;  
+    };
+    
+    $scope.set1VieneDePedido = function() {
+      pedidoFactory.vieneDePedido = 1;  
+    };
+    
+    $scope.set0VieneDePedido = function() {
+      pedidoFactory.vieneDePedido = 0;  
+    };
+    
+    $scope.seleccionarClientePedido = function(index) {
+      pedidoFactory.clienteSel = clienteFactory.items[index];
+      $scope.app.navigator.pushPage('pedidosAM.html');
+    };
 
     $scope.tiposCliente = function() {
         $scope.crearModalEnRunTime();
@@ -323,8 +339,8 @@ function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory,
 
 }
 
-Onsen.controller('clienteCtrl', function($scope, usuarioFactory, clienteFactory, tipoClienteFactory, clienteService) {
-    clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory, clienteService);
+Onsen.controller('clienteCtrl', function($scope, usuarioFactory, clienteFactory, tipoClienteFactory, clienteService, pedidoFactory) {
+    clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory, clienteService, pedidoFactory);
 });
 
 

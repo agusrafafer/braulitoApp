@@ -5,7 +5,7 @@
  */
 
 
-function productoCtrl($scope, usuarioFactory, productoFactory, productoService, proveedorService, proveedorFactory) {
+function productoCtrl($scope, usuarioFactory, productoFactory, productoService, proveedorService, proveedorFactory, pedidoFactory) {
 
     $scope.crearModalEnRunTime = function() {
         var elm = $("<ons-modal var=modal><ons-icon icon='ion-load-c' spin='true'></ons-icon><br><br>Aguarde...</ons-modal>");
@@ -71,6 +71,38 @@ function productoCtrl($scope, usuarioFactory, productoFactory, productoService, 
         productoFactory.seleccionado.fechaVencimiento = new Date(productoFactory.seleccionado.fechaVencimiento);
         productoFactory.seleccionado.proveedoresSel = productoFactory.seleccionado.proveedorCollection;
         $scope.app.navigator.pushPage('productosAM.html');
+    };
+
+    $scope.getVieneDePedido = function() {
+        return pedidoFactory.vieneDePedido;
+    };
+
+    $scope.set1VieneDePedido = function() {
+        pedidoFactory.vieneDePedido = 1;
+    };
+
+    $scope.set0VieneDePedido = function() {
+        pedidoFactory.vieneDePedido = 0;
+    };
+
+    $scope.seleccionarProductoPedido = function(index) {
+        var idx = -1;
+        for (var i = 0; i < pedidoFactory.detallesSel.length; i++) {
+            if (pedidoFactory.detallesSel[i].idProducto.idProducto === productoFactory.items[index].idProducto) {
+                idx = i;
+                break;
+            }
+        }
+        if (idx === -1) {
+            var objStr = "{\"idDetallePedido\" : 0, \n\
+                \"subTotal\" : 0.00, \n\
+                \"cantidad\" : 1, \n\
+                \"precioProducto\" : " + productoFactory.items[index].precio + ", \n\
+                \"idProducto\" : " + JSON.stringify(productoFactory.items[index]) + ", \n\
+                \"idPedido\" : {}}";
+            pedidoFactory.detallesSel.push(JSON.parse(objStr));
+        }
+        $scope.app.navigator.pushPage('pedidosAM.html');
     };
 
     $scope.validarEdicion = function() {
@@ -355,8 +387,8 @@ function productoCtrl($scope, usuarioFactory, productoFactory, productoService, 
 
 }
 
-Onsen.controller('productoCtrl', function($scope, usuarioFactory, productoFactory, productoService, proveedorService, proveedorFactory) {
-    productoCtrl($scope, usuarioFactory, productoFactory, productoService, proveedorService, proveedorFactory);
+Onsen.controller('productoCtrl', function($scope, usuarioFactory, productoFactory, productoService, proveedorService, proveedorFactory, pedidoFactory) {
+    productoCtrl($scope, usuarioFactory, productoFactory, productoService, proveedorService, proveedorFactory, pedidoFactory);
 });
 
 

@@ -29,7 +29,7 @@
         <ons-list-item ng-controller="clienteCtrl"
                        ng-show="isLogueado()"
                        modifier="tappable" class="list__item__line-height"
-                       ng-click="clientes();
+                       ng-click="set0VieneDePedido();clientes();
                                app.slidingMenu.close();">
             <i class="fa ion-person-stalker fa-lg" style="color: #666"></i>
             &nbsp; Clientes
@@ -38,7 +38,7 @@
         <ons-list-item ng-controller="productoCtrl"
                        ng-show="isLogueado()" 
                        modifier="tappable" class="list__item__line-height"
-                       ng-click="productos();
+                       ng-click="set0VieneDePedido();productos();
                            app.slidingMenu.close();">
             <i class="fa ion-bag fa-lg" style="color: #666"></i>
             &nbsp; Productos
@@ -53,10 +53,10 @@
             &nbsp; Proveedores
         </ons-list-item>
 
-        <ons-list-item ng-controller="usuarioCtrl"
+        <ons-list-item ng-controller="pedidoCtrl"
                        ng-show="isLogueado()"
                        modifier="tappable" class="list__item__line-height"
-                       ng-click="proximamente();
+                       ng-click="pedidos();
                                app.slidingMenu.close();">
             <i class="fa ion-clipboard fa-lg" style="color: #666"></i>
             &nbsp; Pedidos

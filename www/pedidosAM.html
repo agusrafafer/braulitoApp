@@ -1,0 +1,195 @@
+<ons-page on-device-backbutton="app.navigator.popPage()" ng-controller="pedidoCtrl">
+    <form name="frmPedidoAM" novalidate>
+        <ons-toolbar>
+            <div class="left">
+                <ons-toolbar-button ng-click="atrasEdicion()">
+                    <ons-icon icon="ion-arrow-left-c" style="font-size: 28px;" fixed-width="false"></ons-icon>
+                </ons-toolbar-button>
+            </div>
+            <div class="center">Pedido ${{getTotalPedido()}}</div>
+            <div class="right">
+                <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && frmPedidoAM.$valid && (getPedidoSeleccionado().estado !== 'COBRADO')}}"
+                                    ng-disabled="!frmPedidoAM.$valid"
+                                    ng-click="dialogPago.show()">
+                    <ons-icon icon="ion-social-usd" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+                    </ons-icon>
+                </ons-toolbar-button>
+
+                <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && !frmPedidoAM.$valid}}"
+                                    ng-disabled="!frmPedidoAM.$valid">
+                    <ons-icon icon="ion-social-usd" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+                    </ons-icon>
+                </ons-toolbar-button>
+
+                <ons-toolbar-button ng-click="validarEdicion()"
+                                    ng-show="{{frmPedidoAM.$valid && (getPedidoSeleccionado().estado === 'PRESUPUESTO')}}">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-show="!frmPedidoAM.$valid"
+                                    ng-disabled="!frmPedidoAM.$valid">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+                <ons-toolbar-button ng-click="eliminar()"
+                                    ng-show="{{getPedidoSeleccionado().idPedido !== 0}}">
+                    <ons-icon icon="ion-trash-a" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                </ons-toolbar-button>
+            </div>
+
+        </ons-toolbar>
+
+        <div style="margin: 10px;" ng-show="{{getClienteSel() === ''}}">
+            <button ng-controller="clienteCtrl" class="button button--large" ng-click="clientes()">
+                <ons-icon icon="ion-plus-round" 
+                          fixed-width="false">
+                </ons-icon>
+                Agregar Cliente
+            </button>
+        </div>
+        <ons-list ng-show="{{getClienteSel() !== ''}}">
+            <ons-list-header>Cliente:</ons-list-header>
+            <ons-list-item class="list-item-container" style="margin-top: 10px" >
+                <ons-row>
+                    <ons-col>
+                        <div class="name">
+                            {{getClienteSel().cliente}}
+                        </div>
+                        <div class="location">
+                            <i class="fa fa-map-marker"></i> {{getClienteSel().domicilio}}
+                            <div style="margin-top: 5px;">
+                                Cel: {{getClienteSel().celular}}
+                            </div>
+                            <div style="margin-top: 5px;">
+                                Tel: {{getClienteSel().telefono}}
+                            </div>
+                        </div>
+                        <div class="desc">
+                            <span class="labelito labelito-{{(getClienteSel().idTipoCliente.tipo === 'Bueno') ? 'success' : (getClienteSel().idTipoCliente.tipo === 'Reg') ? 'warning' : 'danger'}}"> {{getClienteSel().idTipoCliente.tipo}}</span>
+                        </div>
+                    </ons-col>
+                    <ons-col width="40px" ng-show="{{getPedidoSeleccionado().estado === 'PRESUPUESTO'}}">
+                        <button class="button" ng-click="quitarClienteSel()">
+                            <ons-icon icon="ion-trash-a" 
+                                      fixed-width="false">
+                            </ons-icon>
+                        </button>
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+        </ons-list>
+
+        <div style="margin: 10px;">
+            <div ng-show="{{getPedidoSeleccionado().estado === 'PRESUPUESTO'}}">
+                <button ng-controller="productoCtrl" class="button button--large--cta" ng-click="productos()">
+                    <ons-icon icon="ion-plus-round" 
+                              fixed-width="false">
+                    </ons-icon>
+                    Agregar Producto
+                </button>
+            </div>
+        </div>
+        <ons-list ng-show="{{getDetallesSel().length > 0}}">
+            <ons-list-header>Productos:</ons-list-header>
+            <ons-list-item class="list-item-container"
+                           ng-repeat="det in getDetallesSel()">
+                <ons-row>
+                    <ons-col>
+                        <div class="name">
+                            {{det.idProducto.producto}}
+                        </div>
+                        <div class="location">
+                            <!--<i class="fa fa-usd"></i> {{det.idProducto.precio}}-->
+                            <div style="margin-top: 5px;">
+                                Cod.: {{det.idProducto.codigo}}
+                            </div>
+                            <div style="margin-top: 5px;">
+                                Subtotal $: {{getSubTotalDetPedido($index)}}
+                            </div>
+                        </div>
+                    </ons-col>
+                    <ons-col>
+                        <div class="location">
+                            Canti. <i class="ion-bag"></i>: 
+                            <input type="number"
+                                   name="cantidad"  placeholder="0" 
+                                   ng-model="det.cantidad" required style="width: 100px"
+                                   ng-minlength="1" ng-maxlength="5"
+                                   ng-show="{{getPedidoSeleccionado().estado !== 'COBRADO'}}"
+                                   min="1" maxlength="5" 
+                                   ng-pattern="/^[1-9][0-9]{0,2}(?:,?[0-9]{3}){0,3}(?:\.[0-9]{1,2})?$/">
+                            <label ng-show="{{getPedidoSeleccionado().estado === 'COBRADO'}}">{{det.cantidad}}</label>
+                        </div>
+                        <!--<div class="location">
+                            Precio <i class="ion-social-usd"></i>:
+                            <input type="number"
+                               name="precio"  placeholder="0" 
+                               ng-model="det.precio" required style="width: 100px"
+                               ng-minlength="1" ng-maxlength="5"
+                               maxlength="5" ng-pattern="/^[1-9][0-9]{0,2}(?:,?[0-9]{3}){0,3}(?:\.[0-9]{1,2})?$/">
+                        </div>-->
+                        <div class="location">
+                            Precio <i class="ion-social-usd"></i>:
+                            {{getPrecioSugeridoProducto($index)}}
+                        </div>
+                    </ons-col>
+                    <ons-col width="40px" ng-show="{{getPedidoSeleccionado().estado === 'PRESUPUESTO'}}">
+                        <button class="button" ng-click="quitarDetalleSel($index)">
+                            <ons-icon icon="ion-trash-a" 
+                                      fixed-width="false">
+                            </ons-icon>
+                        </button>
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+        </ons-list>
+
+        <ons-dialog cancelable="true" var="dialogPago">
+            <ons-toolbar inline>
+                <div class="center">
+                    Cobro
+                </div>
+            </ons-toolbar>
+
+            <ons-list>
+                <ons-list-item>
+                    Total ${{getPedidoSeleccionado().total}}<br/>
+
+                    Cobrado ${{getPedidoSeleccionado().cobro}}<br/>
+
+                    Saldo ${{(getPedidoSeleccionado().total - getPedidoSeleccionado().cobro).toFixed(2)}}<br/>
+
+                    Cobrar $<input type="number"
+                                   name="totalPagar" placeholder="0" 
+                                   ng-model="cobroRecibidoPedido.valor"
+                                   ng-show="{{getPedidoSeleccionado().estado !== 'COBRADO'}}"
+                                   style="width: 100px; font-size: 14px;"
+                                   min="0" maxlength="5" ng-maxlength="5"
+                                   >
+                    <label ng-show="{{getPedidoSeleccionado().estado === 'COBRADO'}}">{{cobroRecibidoPedido.valor}}</label>
+                </ons-list-item>
+            </ons-list>
+
+            <p style="text-align: center;">
+            <ons-button ng-click="recibirCobro()">
+                Ok
+            </ons-button>
+            </p>
+        </ons-dialog>
+
+    </form>
+</ons-page>
