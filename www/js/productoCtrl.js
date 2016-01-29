@@ -7,6 +7,10 @@
 
 function productoCtrl($scope, usuarioFactory, productoFactory, productoService, proveedorService, proveedorFactory, pedidoFactory) {
 
+    $scope.trayendo = false;
+    $scope.pagIni = 0;
+    $scope.pagTam = 10;
+
     $scope.crearModalEnRunTime = function() {
         var elm = $("<ons-modal var=modal><ons-icon icon='ion-load-c' spin='true'></ons-icon><br><br>Aguarde...</ons-modal>");
         elm.appendTo($("body"));
@@ -25,8 +29,11 @@ function productoCtrl($scope, usuarioFactory, productoFactory, productoService, 
     $scope.productos = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
-
-        productoService.productos()
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
+        productoFactory.textoBuscado = "";
+        
+        productoService.buscar(productoFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
@@ -213,16 +220,19 @@ function productoCtrl($scope, usuarioFactory, productoFactory, productoService, 
             title: 'Info',
             message: "Buscar...",
             callback: function(texto) {
-                $scope.buscar(texto);
+                productoFactory.textoBuscado = texto;
+                $scope.buscar(productoFactory.textoBuscado);
             }
         });
     };
 
-    $scope.buscar = function(texto) {
+    $scope.buscar = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
 
-        productoService.buscar(texto)
+        productoService.buscar(productoFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
@@ -250,6 +260,35 @@ function productoCtrl($scope, usuarioFactory, productoFactory, productoService, 
                         messageHTML: '<strong style=\"color: #ff3333\">' + mensaje + '</strong>'
                     });
                 });
+    };
+    
+    $scope.traerMas = function() {
+        $scope.trayendo = true;
+
+        $scope.pagIni = $scope.pagTam;
+        $scope.pagTam = $scope.pagTam + 10;
+
+        productoService.buscar(productoFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
+                .then(function(data) {
+                    //Agrego los elementos que trae data al array items de publicacionFactory
+                    Array.prototype.push.apply(productoFactory.items, data.contenido);
+                    $scope.trayendo = false;
+                })
+                .catch(function(data, status) {
+                    $scope.trayendo = false;
+                    var mensaje = "No autorizado.";
+                    switch (status) {
+                        case 401:
+                            mensaje = "No autorizado.";
+                            break;
+                    }
+                    $scope.ons.notification.alert({
+                        title: 'Info',
+                        messageHTML: '<strong style=\"color: #ff3333\">Operación denegada: ' + mensaje + '</strong>'
+                    });
+                }).finally(function() {
+        });
+
     };
 
     $scope.eliminar = function() {

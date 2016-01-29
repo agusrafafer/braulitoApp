@@ -1,0 +1,72 @@
+<ons-page on-device-backbutton="app.navigator.popPage()" ng-controller="usuarioCtrl">
+
+    <ons-toolbar>
+        <div class="left">
+            <ons-toolbar-button ng-click="app.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
+        </div>
+        <div class="center">Configuracion</div>
+        <div class="right">
+            <ons-toolbar-button ng-click="registrarConfig()"
+                                ng-show="frmConfig.$valid">
+                <ons-icon icon="ion-checkmark-round" 
+                          fixed-width="false" 
+                          style="vertical-align: -4px;">
+
+                </ons-icon>
+            </ons-toolbar-button>
+            <ons-toolbar-button ng-show="!frmConfig.$valid"
+                                ng-disabled="!frmConfig.$valid">
+                <ons-icon icon="ion-checkmark-round" 
+                          fixed-width="false" 
+                          style="vertical-align: -4px;">
+
+                </ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+
+
+    <div>
+        <form name="frmConfig" novalidate>
+            <ons-list class="list list--inset" style="margin-top: 10px;">
+                <ons-list-header>Configuraci&oacute; de precios</ons-list-header>
+                <ons-list-item>
+                    <ons-row>
+                        <ons-col width="100px"><span class="labelito labelito-success">Bueno %:</span></ons-col>
+                        <ons-col width="100px">
+                            <input type="number" class="text-input text-input--underbar"
+                                   name="porcenClienteBueno" placeholder="" 
+                                   min="0" maxlength="3" ng-maxlength="3" required
+                                   ng-model="getConfigFactory().porcenBuen" required style="width: 100%;"/>
+                        </ons-col>
+                    </ons-row>
+                </ons-list-item>
+                <ons-list-item>
+                    <ons-row>
+                        <ons-col width="100px"><span class="labelito labelito-warning">Regular %:</span></ons-col>
+                        <ons-col width="100px">
+                            <input type="number" class="text-input text-input--underbar"
+                                   name="porcenClienteRegu" placeholder="" 
+                                   min="0" maxlength="3" ng-maxlength="3" required
+                                   ng-model="getConfigFactory().porcenRegu" required style="width: 100%;"/>
+                        </ons-col>
+                    </ons-row>
+                </ons-list-item>
+                <ons-list-item>
+                    <ons-row>
+                        <ons-col width="100px"><span class="labelito labelito-danger">Malo %:</span></ons-col>
+                        <ons-col width="100px">
+                            <input type="number" class="text-input text-input--underbar"
+                                   name="porcenClienteMalo" placeholder="" 
+                                   min="0" maxlength="3" ng-maxlength="3" required
+                                   ng-model="getConfigFactory().porcenMalo" required style="width: 100%;"/>
+                        </ons-col>
+                    </ons-row>
+                </ons-list-item>
+            </ons-list>
+
+        </form>
+    </div>
+
+</ons-page>

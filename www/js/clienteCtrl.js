@@ -7,6 +7,10 @@
 
 function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory, clienteService, pedidoFactory) {
 
+    $scope.trayendo = false;
+    $scope.pagIni = 0;
+    $scope.pagTam = 10;
+    
     $scope.crearModalEnRunTime = function() {
         var elm = $("<ons-modal var=modal><ons-icon icon='ion-load-c' spin='true'></ons-icon><br><br>Aguarde...</ons-modal>");
         elm.appendTo($("body"));
@@ -25,8 +29,11 @@ function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory,
     $scope.clientes = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
+        clienteFactory.textoBuscado = "";
 
-        clienteService.clientes()
+        clienteService.buscar(clienteFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
@@ -55,7 +62,10 @@ function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory,
                     });
                 });
     };
-
+    
+    $scope.getTextoBuscado = function() {
+        return clienteFactory.textoBuscado;
+    };
 
     $scope.getClientes = function() {
         return clienteFactory.items;
@@ -240,16 +250,19 @@ function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory,
             title: 'Info',
             message: "Buscar...",
             callback: function(texto) {
-                $scope.buscar(texto);
+                clienteFactory.textoBuscado = texto;
+                $scope.buscar();
             }
         });
     };
     
-    $scope.buscar = function(texto) {
+    $scope.buscar = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
-
-        clienteService.buscar(texto)
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
+        
+        clienteService.buscar(clienteFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
@@ -277,6 +290,35 @@ function clienteCtrl($scope, usuarioFactory, clienteFactory, tipoClienteFactory,
                         messageHTML: '<strong style=\"color: #ff3333\">' + mensaje + '</strong>'
                     });
                 });
+    };
+    
+    $scope.traerMas = function() {
+        $scope.trayendo = true;
+
+        $scope.pagIni = $scope.pagTam;
+        $scope.pagTam = $scope.pagTam + 10;
+
+        clienteService.buscar(clienteFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
+                .then(function(data) {
+                    //Agrego los elementos que trae data al array items de publicacionFactory
+                    Array.prototype.push.apply(clienteFactory.items, data.contenido);
+                    $scope.trayendo = false;
+                })
+                .catch(function(data, status) {
+                    $scope.trayendo = false;
+                    var mensaje = "No autorizado.";
+                    switch (status) {
+                        case 401:
+                            mensaje = "No autorizado.";
+                            break;
+                    }
+                    $scope.ons.notification.alert({
+                        title: 'Info',
+                        messageHTML: '<strong style=\"color: #ff3333\">Operación denegada: ' + mensaje + '</strong>'
+                    });
+                }).finally(function() {
+        });
+
     };
 
     $scope.eliminar = function() {

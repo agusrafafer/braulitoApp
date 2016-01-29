@@ -10,7 +10,7 @@
 
 
 //El controlador de usuarios
-function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $window) {
+function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $window, configFactory) {
 
     $scope.usuario = "";
     $scope.nombre = "";
@@ -28,6 +28,44 @@ function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $wi
         ons.compile(elm[0]); // The argument must be a HTMLElement object
     };
 
+    $scope.getConfigFactory = function() {
+        return configFactory.config;
+    };
+
+    $scope.registrarConfig = function() {
+        $scope.crearModalEnRunTime();
+        $scope.modal.show();
+        usuarioService.registrarConfig(configFactory.config.porcenBuen, configFactory.config.porcenRegu, configFactory.config.porcenMalo)
+                .then(function(data) {
+                    var respuesta = data.respuesta;
+                    if (respuesta === 'OK') {
+                        $scope.modal.hide();
+                        $scope.ons.notification.alert({
+                            title: 'Info',
+                            messageHTML: '<strong style=\"color: #25a6d9\">Config. registrada con exito</strong>'
+                        });
+                    } else {
+                        $scope.modal.hide();
+                        $scope.ons.notification.alert({
+                            title: 'Info',
+                            messageHTML: '<strong style=\"color: #ff3333\">' + data.contenido + '</strong>'
+                        });
+                    }
+                })
+                .catch(function(data, status) {
+                    $scope.modal.hide();
+                    var mensaje = "No autorizado.";
+                    switch (status) {
+                        case 401:
+                            mensaje = "No autorizado.";
+                            break;
+                    }
+                    $scope.ons.notification.alert({
+                        title: 'Info',
+                        messageHTML: '<strong style=\"color: #ff3333\">Operación denegada: ' + mensaje + '</strong>'
+                    });
+                });
+    };
 
     //Método de logueo llamado desde la vista login.html
     $scope.validarLogin = function(login, password) {
@@ -40,6 +78,9 @@ function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $wi
                     if (respuesta === 'OK') {
                         usuarioFactory.usuario = data.contenido;
                         $scope.usuario = usuarioFactory.usuario;
+                        configFactory.config.porcenBuen = data.tiposCliente[0].aumentoExtra;
+                        configFactory.config.porcenRegu = data.tiposCliente[1].aumentoExtra;
+                        configFactory.config.porcenMalo = data.tiposCliente[2].aumentoExtra;
                         $scope.modal.hide();
                         $scope.app.slidingMenu.setMainPage('inicio.html');
                     } else {
@@ -153,8 +194,8 @@ function usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $wi
 }
 
 
-Onsen.controller('usuarioCtrl', function($scope, usuarioService, usuarioFactory, noticiaService, $window) {
-    usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $window);
+Onsen.controller('usuarioCtrl', function($scope, usuarioService, usuarioFactory, noticiaService, $window, configFactory) {
+    usuarioCtrl($scope, usuarioService, usuarioFactory, noticiaService, $window, configFactory);
 });
 
 

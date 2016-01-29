@@ -23,12 +23,13 @@ Onsen.service('usuarioService', function($http, $q, wsFactory) {
         return promise;
     };
 
-    this.registrar = function(nombre, apellido, mail, clave2, idUsuarioFb) {
+    this.registrarConfig = function(porcBuen, porcReg, porcMalo) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.post(wsFactory.url + '/registrar', {nombre: nombre, apellido: apellido, mail: mail, clave: clave2, idUsuarioFb: idUsuarioFb})
+        var parametros = porcBuen + 'çç' + porcReg + 'çç' + porcMalo;
+        $http.get(wsFactory.url + '/com.agura.datos.usuario/regConfig/' + parametros)
                 .success(function(data) {
                     defered.resolve(data);
                 })

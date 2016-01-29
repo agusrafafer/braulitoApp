@@ -47,10 +47,25 @@ Onsen.factory('pedidoFactory', function() {
     return {
         items: [],
         seleccionado: "",
-        textoBuscado: "",
+        pedidoBuscado: {
+            idPedido: "",
+            fechaIni: "",
+            fechaFin: "",
+            estado: ""
+        },
         detallesSel: [],
         clienteSel: "",
         vieneDePedido: 0
+    };
+});
+
+Onsen.factory('configFactory', function() {
+    return {
+        config: {
+            porcenBuen: 0.0,
+            porcenRegu: 0.0,
+            porcenMalo: 0.0
+        }
     };
 });
 

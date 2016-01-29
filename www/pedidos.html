@@ -12,7 +12,7 @@
 
                 </ons-icon>
             </ons-toolbar-button>
-            <ons-toolbar-button ng-click="promptBuscar()">
+            <ons-toolbar-button ng-click="dialogFiltroBusqueda.show()">
                 <ons-icon icon="ion-search" 
                           fixed-width="false" 
                           style="vertical-align: -4px;">
@@ -44,7 +44,7 @@
                         {{ped.idCliente.cliente}}
                     </div>
                     <div class="location">
-                        <i class="fa fa-usd"></i> {{ped.total}}
+                        <i class="fa fa-usd"></i> {{getPedidoSeleccionado().estado === 'PRESUPUESTO' ? getTotalPedido() : ped.total}}
                         <div style="margin-top: 5px;">
                             Estado: {{ped.estado}}
                         </div>
@@ -55,6 +55,106 @@
                 </ons-col>
             </ons-row>
         </ons-list-item>
+        <ons-list-item modifier="tappable"
+                       ng-show="!trayendo"
+                       ng-click="traerMas()">
+            <ons-row style="text-align: center; margin-top: 5px; margin-bottom: 5px;
+                     opacity: 0.3;">
+                <ons-col width="100%">
+                    <ons-icon icon="ion-plus-circled" size="40px"></ons-icon>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <ons-list-item ng-show="trayendo">
+            <ons-row style="text-align: center; margin-top: 5px; margin-bottom: 5px;
+                     opacity: 0.3;">
+                <ons-col width="100%">
+                    <ons-icon icon="ion-load-c" size="40px" spin="true"></ons-icon>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
     </ons-list>
+
+    <ons-dialog cancelable="false" var="dialogFiltroBusqueda">
+        <ons-toolbar inline>
+            <div class="center">
+                Buscar
+            </div>
+        </ons-toolbar>
+
+        <ons-list>
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        Fecha Desde:
+                    </ons-col>
+                    <ons-col>
+                        <input type="date" class="text-input text-input--transparent" style="width: 100%"  
+                               placeholder="dd-MM-yyyy" ng-model="getPedidoBuscado().fechaIni"
+                               name="fechaIni"/>
+                    </ons-col>
+                </ons-row>
+                <ons-row>
+                    <ons-col>
+                        Fecha Hasta:
+                    </ons-col>
+                    <ons-col>
+                        <input type="date" class="text-input text-input--transparent" style="width: 100%"  
+                               placeholder="dd-MM-yyyy" ng-model="getPedidoBuscado().fechaFin"
+                               name="fechaFin"/>
+                    </ons-col>
+                </ons-row>
+                <ons-row>
+                    <ons-col>
+                        Nro pedido:
+                    </ons-col>
+                    <ons-col>
+                        <input type="number" class="text-input text-input--transparent" style="width: 100%"  
+                               placeholder="0" ng-model="getPedidoBuscado().idPedido"
+                               min="0" maxlength="8" ng-maxlength="8"
+                               name="nroPedido"/>
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+            <ons-list-item>
+                <ul class="list">
+                    <li class="list__header">Estado:</li>
+                    <li class="list__item list__item--tappable">
+                        <label class="radio-button radio-button--list-item">
+                            <input type="radio" ng-model="getPedidoBuscado().estado" value="PRESUPUESTO">
+                            <div class="radio-button__checkmark
+                                 radio-button--list-item__checkmark"></div>
+                            PRESUPUESTO
+                        </label>
+                    </li>
+
+                    <li class="list__item list__item--tappable">
+                        <label class="radio-button radio-button--list-item">
+                            <input type="radio" ng-model="getPedidoBuscado().estado" value="COBRO PARCIAL">
+                            <div class="radio-button__checkmark
+                                 radio-button--list-item__checkmark"></div>
+                            COBRO PARCIAL
+                        </label>
+                    </li>
+                    <li class="list__item list__item--tappable">
+                        <label class="radio-button radio-button--list-item">
+                            <input type="radio" ng-model="getPedidoBuscado().estado" value="COBRADO">
+                            <div class="radio-button__checkmark
+                                 radio-button--list-item__checkmark"></div>
+                            COBRADO
+                        </label>
+                    </li>
+                </ul>
+            </ons-list-item>
+        </ons-list>
+        <p style="text-align: center;">
+        <ons-button ng-click="buscar()">
+            Ok
+        </ons-button>
+        <ons-button ng-click="cancelarBuscar()">
+            Cancelar
+        </ons-button>
+        </p>
+    </ons-dialog>
 
 </ons-page>

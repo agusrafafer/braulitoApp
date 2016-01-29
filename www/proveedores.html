@@ -52,6 +52,24 @@
                 </ons-col>
             </ons-row>
         </ons-list-item>
+        <ons-list-item modifier="tappable"
+                       ng-show="!trayendo"
+                       ng-click="traerMas()">
+            <ons-row style="text-align: center; margin-top: 5px; margin-bottom: 5px;
+                     opacity: 0.3;">
+                <ons-col width="100%">
+                    <ons-icon icon="ion-plus-circled" size="40px"></ons-icon>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <ons-list-item ng-show="trayendo">
+            <ons-row style="text-align: center; margin-top: 5px; margin-bottom: 5px;
+                     opacity: 0.3;">
+                <ons-col width="100%">
+                    <ons-icon icon="ion-load-c" size="40px" spin="true"></ons-icon>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
     </ons-list>
 
 </ons-page>

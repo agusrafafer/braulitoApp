@@ -5,7 +5,7 @@
  */
 
 Onsen.service('proveedorService', function($http, $q, wsFactory) {
-    
+
     this.proveedores = function() {
         //defered = diferido (asincrono)
         var defered = $q.defer();
@@ -21,7 +21,7 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
 
         return promise;
     };
-    
+
     this.registrar = function(nombre, telefono, domicilio) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
@@ -39,7 +39,7 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
 
         return promise;
     };
-    
+
     this.modificar = function(idProveedor, nombre, telefono, domicilio) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
@@ -57,7 +57,7 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
 
         return promise;
     };
-    
+
     this.eliminar = function(idProveedor) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
@@ -74,13 +74,16 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
 
         return promise;
     };
-    
-    this.buscar = function(texto) {
+
+    this.buscar = function(texto, pagIni, pagTam) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
         var promise = defered.promise;
+        if (texto === '') {
+            texto = '%20';
+        }
 
-        $http.get(wsFactory.url + '/com.agura.datos.proveedor/buscar/' + texto)
+        $http.get(wsFactory.url + '/com.agura.datos.proveedor/buscar/' + texto + '/' + pagIni + '/' + pagTam)
                 .success(function(data) {
                     defered.resolve(data);
                 })
@@ -90,7 +93,7 @@ Onsen.service('proveedorService', function($http, $q, wsFactory) {
 
         return promise;
     };
-    
+
 });
 
 

@@ -65,7 +65,7 @@
         <ons-list-item ng-controller="usuarioCtrl"
                        ng-show="isLogueado()"
                        modifier="tappable" class="list__item__line-height"
-                       ng-click="proximamente();
+                       ng-click="app.navigator.pushPage('config.html');
                                app.slidingMenu.close();">
             <i class="fa ion-wrench fa-lg" style="color: #666"></i>
             &nbsp; Configuraci&oacute;n

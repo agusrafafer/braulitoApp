@@ -7,6 +7,10 @@
 
 function proveedorCtrl($scope, usuarioFactory, proveedorFactory, proveedorService) {
 
+    $scope.trayendo = false;
+    $scope.pagIni = 0;
+    $scope.pagTam = 10;
+    
     $scope.crearModalEnRunTime = function() {
         var elm = $("<ons-modal var=modal><ons-icon icon='ion-load-c' spin='true'></ons-icon><br><br>Aguarde...</ons-modal>");
         elm.appendTo($("body"));
@@ -25,8 +29,11 @@ function proveedorCtrl($scope, usuarioFactory, proveedorFactory, proveedorServic
     $scope.proveedores = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
+        proveedorFactory.textoBuscado = "";
 
-        proveedorService.proveedores()
+        proveedorService.buscar(proveedorFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
@@ -159,16 +166,19 @@ function proveedorCtrl($scope, usuarioFactory, proveedorFactory, proveedorServic
             title: 'Info',
             message: "Buscar...",
             callback: function(texto) {
-                $scope.buscar(texto);
+                proveedorFactory.textoBuscado = texto;
+                $scope.buscar(proveedorFactory.textoBuscado);
             }
         });
     };
     
-    $scope.buscar = function(texto) {
+    $scope.buscar = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
 
-        proveedorService.buscar(texto)
+        proveedorService.buscar(proveedorFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
@@ -196,6 +206,35 @@ function proveedorCtrl($scope, usuarioFactory, proveedorFactory, proveedorServic
                         messageHTML: '<strong style=\"color: #ff3333\">' + mensaje + '</strong>'
                     });
                 });
+    };
+    
+    $scope.traerMas = function() {
+        $scope.trayendo = true;
+
+        $scope.pagIni = $scope.pagTam;
+        $scope.pagTam = $scope.pagTam + 10;
+
+        proveedorService.buscar(proveedorFactory.textoBuscado, $scope.pagIni, $scope.pagTam)
+                .then(function(data) {
+                    //Agrego los elementos que trae data al array items de publicacionFactory
+                    Array.prototype.push.apply(proveedorFactory.items, data.contenido);
+                    $scope.trayendo = false;
+                })
+                .catch(function(data, status) {
+                    $scope.trayendo = false;
+                    var mensaje = "No autorizado.";
+                    switch (status) {
+                        case 401:
+                            mensaje = "No autorizado.";
+                            break;
+                    }
+                    $scope.ons.notification.alert({
+                        title: 'Info',
+                        messageHTML: '<strong style=\"color: #ff3333\">Operación denegada: ' + mensaje + '</strong>'
+                    });
+                }).finally(function() {
+        });
+
     };
 
     $scope.eliminar = function() {

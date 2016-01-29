@@ -73,12 +73,32 @@ Onsen.service('pedidoService', function($http, $q, wsFactory) {
         return promise;
     };
 
-    this.buscar = function(texto) {
+    this.buscar = function(idPedido, estado, fechaIni, fechaFin, pagIni, pagTam) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
         var promise = defered.promise;
+        if (idPedido === '') {
+            idPedido = '%20';
+        }
+        if (estado === '') {
+            estado = '%20';
+        }
+        if (fechaIni === '' || fechaIni === null) {
+            fechaIni = '%20';
+        } else {
+            fechaIni = (fechaIni.getFullYear() + '-'
+                    + ('0' + (fechaIni.getMonth() + 1)).slice(-2)
+                    + '-' + ('0' + (fechaIni.getDate())).slice(-2));
+        }
+        if (fechaFin === '' || fechaFin === null) {
+            fechaFin = '%20';
+        } else {
+            fechaFin = (fechaFin.getFullYear() + '-'
+                    + ('0' + (fechaFin.getMonth() + 1)).slice(-2)
+                    + '-' + ('0' + (fechaFin.getDate())).slice(-2));
+        }
 
-        $http.get(wsFactory.url + '/com.agura.datos.producto/buscar/' + texto)
+        $http.get(wsFactory.url + '/com.agura.datos.pedido/buscar/' + idPedido + '/' + estado + '/' + fechaIni + '/' + fechaFin + '/' + pagIni + '/' + pagTam)
                 .success(function(data) {
                     defered.resolve(data);
                 })
@@ -88,7 +108,7 @@ Onsen.service('pedidoService', function($http, $q, wsFactory) {
 
         return promise;
     };
-    
+
     this.cobrar = function(idPedido, cobro) {
         //defered = diferido (asincrono)
         var defered = $q.defer();

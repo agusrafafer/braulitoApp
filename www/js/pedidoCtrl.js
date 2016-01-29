@@ -5,7 +5,11 @@
  */
 
 
-function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, productoService, pedidoFactory, pedidoService) {
+function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory) {
+
+    $scope.trayendo = false;
+    $scope.pagIni = 0;
+    $scope.pagTam = 10;
 
     /*
      * En el modelo siempre se debe usar el operador punto
@@ -36,8 +40,14 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
     $scope.pedidos = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
+        pedidoFactory.idPedidoBuscado = "";
+        pedidoFactory.estadoBuscado = "";
+        pedidoFactory.fechaIniBuscado = "";
+        pedidoFactory.fechaFinBuscado = "";
 
-        pedidoService.pedidos()
+        pedidoService.buscar(pedidoFactory.pedidoBuscado.idPedido, pedidoFactory.pedidoBuscado.estado, pedidoFactory.pedidoBuscado.fechaIni, pedidoFactory.pedidoBuscado.fechaFin, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
@@ -67,6 +77,21 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
                 });
     };
 
+    $scope.getPedidoBuscado = function() {
+        return pedidoFactory.pedidoBuscado;
+    };
+
+    $scope.getFechaIniBuscado = function() {
+        return pedidoFactory.fechaIniBuscado;
+    };
+
+    $scope.getFechaFinBuscado = function() {
+        return pedidoFactory.fechaFinBuscado;
+    };
+
+    $scope.getEstadoBuscado = function() {
+        return pedidoFactory.estadoBuscado;
+    };
 
     $scope.getPedidos = function() {
         return pedidoFactory.items;
@@ -119,7 +144,7 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
     };
 
     $scope.getPrecioSugeridoProducto = function(index) {
-        var precio = pedidoFactory.detallesSel[index].precioProducto;
+        var precio = pedidoFactory.detallesSel[index].idProducto.precio;
         precio = precio + ($scope.getAumento() * precio / 100);
         precio = precio.toFixed(2);
         return precio;
@@ -127,7 +152,7 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
 
     $scope.getSubTotalDetPedido = function(index) {
         var subTotalDet = 0.00;
-        var precio = pedidoFactory.detallesSel[index].precioProducto;
+        var precio = pedidoFactory.detallesSel[index].idProducto.precio;
         subTotalDet = pedidoFactory.detallesSel[index].cantidad * (precio + ($scope.getAumento() * precio / 100)) + 0.00;
         subTotalDet = subTotalDet.toFixed(2);
         return subTotalDet;
@@ -136,7 +161,7 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
     $scope.getTotalPedido = function() {
         var total = 0;
         for (var i = 0; i < pedidoFactory.detallesSel.length; i++) {
-            total += pedidoFactory.detallesSel[i].precioProducto * pedidoFactory.detallesSel[i].cantidad;
+            total += pedidoFactory.detallesSel[i].idProducto.precio * pedidoFactory.detallesSel[i].cantidad;
         }
         total = total + ($scope.getAumento() * total / 100);
         total = total.toFixed(2);
@@ -148,13 +173,13 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
         if (pedidoFactory.clienteSel !== "") {
             switch (pedidoFactory.clienteSel.idTipoCliente.tipo) {
                 case "Bueno":
-                    aumento = 0.0;
+                    aumento = configFactory.config.porcenBuen;
                     break;
                 case "Reg":
-                    aumento = 5;
+                    aumento = configFactory.config.porcenRegu;
                     break;
                 case "Malo":
-                    aumento = 10;
+                    aumento = configFactory.config.porcenMalo;
                     break;
             }
         }
@@ -337,29 +362,23 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
         $scope.app.navigator.pushPage('pedidosAM.html');
     };
 
-    $scope.promptBuscar = function() {
-        $scope.ons.notification.prompt({
-            title: 'Info',
-            message: "Buscar...",
-            callback: function(texto) {
-                $scope.buscar(texto);
-            }
-        });
-    };
-
-    $scope.buscar = function(texto) {
+    $scope.buscar = function() {
         $scope.crearModalEnRunTime();
         $scope.modal.show();
+        $scope.pagIni = 0;
+        $scope.pagTam = 10;
 
-        productoService.buscar(texto)
+        pedidoService.buscar(pedidoFactory.pedidoBuscado.idPedido, pedidoFactory.pedidoBuscado.estado, pedidoFactory.pedidoBuscado.fechaIni, pedidoFactory.pedidoBuscado.fechaFin, $scope.pagIni, $scope.pagTam)
                 .then(function(data) {
                     var respuesta = data.respuesta;
                     if (respuesta === 'OK') {
-                        productoFactory.items = data.contenido;
+                        pedidoFactory.items = data.contenido;
                         $scope.modal.hide();
+                        $scope.dialogFiltroBusqueda.hide();
                         //Array.prototype.push.apply(publicacionFactory.items, data.contenido);
                     } else {
                         $scope.modal.hide();
+                        $scope.dialogFiltroBusqueda.hide();
                         $scope.ons.notification.alert({
                             title: 'Info',
                             messageHTML: '<strong style=\"color: #ff3333\">' + data.contenido + '</strong>'
@@ -368,6 +387,7 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
                 })
                 .catch(function(data, status) {
                     $scope.modal.hide();
+                    $scope.dialogFiltroBusqueda.hide();
                     var mensaje = "No autorizado.";
                     switch (status) {
                         case 401:
@@ -379,6 +399,45 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
                         messageHTML: '<strong style=\"color: #ff3333\">' + mensaje + '</strong>'
                     });
                 });
+    };
+
+    $scope.traerMas = function() {
+        $scope.trayendo = true;
+
+        $scope.pagIni = $scope.pagTam;
+        $scope.pagTam = $scope.pagTam + 10;
+
+        pedidoService.buscar(pedidoFactory.pedidoBuscado.idPedido, pedidoFactory.pedidoBuscado.estado, pedidoFactory.pedidoBuscado.fechaIni, pedidoFactory.pedidoBuscado.fechaFin, $scope.pagIni, $scope.pagTam)
+                .then(function(data) {
+                    //Agrego los elementos que trae data al array items de publicacionFactory
+                    Array.prototype.push.apply(pedidoFactory.items, data.contenido);
+                    $scope.trayendo = false;
+                })
+                .catch(function(data, status) {
+                    $scope.trayendo = false;
+                    var mensaje = "No autorizado.";
+                    switch (status) {
+                        case 401:
+                            mensaje = "No autorizado.";
+                            break;
+                    }
+                    $scope.ons.notification.alert({
+                        title: 'Info',
+                        messageHTML: '<strong style=\"color: #ff3333\">Operación denegada: ' + mensaje + '</strong>'
+                    });
+                }).finally(function() {
+        });
+
+    };
+
+    $scope.cancelarBuscar = function() {
+        pedidoFactory.pedidoBuscado = {
+            idPedido: "",
+            fechaIni: "",
+            fechaFin: "",
+            estado: ""
+        };
+        $scope.dialogFiltroBusqueda.hide();
     };
 
     $scope.eliminar = function() {
@@ -442,8 +501,8 @@ function pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, pro
 
 }
 
-Onsen.controller('pedidoCtrl', function($scope, usuarioFactory, usuarioService, productoFactory, productoService, pedidoFactory, pedidoService) {
-    pedidoCtrl($scope, usuarioFactory, usuarioService, productoFactory, productoService, pedidoFactory, pedidoService);
+Onsen.controller('pedidoCtrl', function($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory) {
+    pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory);
 });
 
 

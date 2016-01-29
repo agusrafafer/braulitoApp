@@ -75,12 +75,15 @@ Onsen.service('productoService', function($http, $q, wsFactory) {
         return promise;
     };
 
-    this.buscar = function(texto) {
+    this.buscar = function(texto, pagIni, pagTam) {
         //defered = diferido (asincrono)
         var defered = $q.defer();
         var promise = defered.promise;
+        if (texto === '') {
+            texto = '%20';
+        }
 
-        $http.get(wsFactory.url + '/com.agura.datos.producto/buscar/' + texto)
+        $http.get(wsFactory.url + '/com.agura.datos.producto/buscar/' + texto + '/' + pagIni + '/' + pagTam)
                 .success(function(data) {
                     defered.resolve(data);
                 })

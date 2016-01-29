@@ -5,8 +5,16 @@
                 <ons-toolbar-button ng-click="atrasEdicion()">
                     <ons-icon icon="ion-arrow-left-c" style="font-size: 28px;" fixed-width="false"></ons-icon>
                 </ons-toolbar-button>
+                <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && frmPedidoAM.$valid}}">
+                    <ons-icon icon="ion-printer" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+                    </ons-icon>
+                </ons-toolbar-button>
             </div>
-            <div class="center">Pedido ${{getTotalPedido()}}</div>
+            <div class="center">
+                Pedido ${{getPedidoSeleccionado().estado === 'PRESUPUESTO' ? getTotalPedido() : getPedidoSeleccionado().total}}
+            </div>
             <div class="right">
                 <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && frmPedidoAM.$valid && (getPedidoSeleccionado().estado !== 'COBRADO')}}"
                                     ng-disabled="!frmPedidoAM.$valid"
@@ -118,7 +126,7 @@
                                 Cod.: {{det.idProducto.codigo}}
                             </div>
                             <div style="margin-top: 5px;">
-                                Subtotal $: {{getSubTotalDetPedido($index)}}
+                                Subtotal $: {{getPedidoSeleccionado().estado === 'PRESUPUESTO' ? getSubTotalDetPedido($index) : det.subTotal}}
                             </div>
                         </div>
                     </ons-col>
@@ -144,7 +152,7 @@
                         </div>-->
                         <div class="location">
                             Precio <i class="ion-social-usd"></i>:
-                            {{getPrecioSugeridoProducto($index)}}
+                            {{getPedidoSeleccionado().estado === 'PRESUPUESTO' ? getPrecioSugeridoProducto($index) : det.precioProducto}}
                         </div>
                     </ons-col>
                     <ons-col width="40px" ng-show="{{getPedidoSeleccionado().estado === 'PRESUPUESTO'}}">
