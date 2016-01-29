@@ -5,7 +5,7 @@
  */
 
 
-function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory) {
+function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory, $window, wsFactory) {
 
     $scope.trayendo = false;
     $scope.pagIni = 0;
@@ -497,12 +497,16 @@ function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pe
             }
         });
     };
+    
+    $scope.imprimirReportePDF = function() {
+        $window.open(wsFactory.urlImpReporte + "?idPedido=" + pedidoFactory.seleccionado.idPedido, "_blank");
+    };
 
 
 }
 
-Onsen.controller('pedidoCtrl', function($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory) {
-    pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory);
+Onsen.controller('pedidoCtrl', function($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory, $window, wsFactory) {
+    pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pedidoFactory, pedidoService, configFactory, $window, wsFactory);
 });
 
 

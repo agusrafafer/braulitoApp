@@ -5,7 +5,8 @@
                 <ons-toolbar-button ng-click="atrasEdicion()">
                     <ons-icon icon="ion-arrow-left-c" style="font-size: 28px;" fixed-width="false"></ons-icon>
                 </ons-toolbar-button>
-                <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && frmPedidoAM.$valid}}">
+                <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && frmPedidoAM.$valid}}"
+                                    ng-click="imprimirReportePDF()">
                     <ons-icon icon="ion-printer" 
                               fixed-width="false" 
                               style="vertical-align: -4px;">
