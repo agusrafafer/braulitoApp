@@ -76,7 +76,11 @@ function productoCtrl($scope, usuarioFactory, productoFactory, productoService, 
     $scope.editarVer = function(index) {
         productoFactory.seleccionado = productoFactory.items[index];
         productoFactory.seleccionado.fechaVencimiento = new Date(productoFactory.seleccionado.fechaVencimiento);
-        productoFactory.seleccionado.proveedoresSel = productoFactory.seleccionado.proveedorCollection;
+        if (typeof (productoFactory.seleccionado.proveedorCollection) === "undefined") {
+            productoFactory.seleccionado.proveedoresSel = [];
+        } else {
+            productoFactory.seleccionado.proveedoresSel = productoFactory.seleccionado.proveedorCollection;
+        }
         $scope.app.navigator.pushPage('productosAM.html');
     };
 
@@ -369,7 +373,7 @@ function productoCtrl($scope, usuarioFactory, productoFactory, productoService, 
         $scope.modal.show();
 
         if (texto !== '') {
-            proveedorService.buscar(texto)
+            proveedorService.buscar(texto, $scope.pagIni, $scope.pagTam)
                     .then(function(data) {
                         var respuesta = data.respuesta;
                         if (respuesta === 'OK') {
