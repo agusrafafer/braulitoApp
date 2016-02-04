@@ -497,9 +497,10 @@ function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pe
             }
         });
     };
-    
+
     $scope.imprimirReportePDF = function() {
-        $window.open(wsFactory.urlImpReporte + "?idPedido=" + pedidoFactory.seleccionado.idPedido, "_system");
+        var urlEncoded = encodeURI("https://docs.google.com/gview?embedded=true&url=" + wsFactory.urlImpReporte + "?idPedido=" + pedidoFactory.seleccionado.idPedido);
+        $window.open(urlEncoded, '_blank', 'location = yes, EnableViewPortScale = yes');
     };
 
 
