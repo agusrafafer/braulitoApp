@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ng-app="Onsen">
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+    <script type="text/javascript" src="cordova.js"></script> 
+    <script type="text/javascript" src="js/angular/angular.js"></script>
+    <script type="text/javascript" src="js/onsenui.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="js/angular/angular-weather-directive.min.js"></script>
+    <script type="text/javascript" src="js/xml2json.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/factories.js"></script>
+    <!--<script type="text/javascript" src="js/underscore-min.js"></script>-->
+    <script type="text/javascript" src="js/pedidoService.js"></script>
+  </head>
+  <body ng-controller="pedidoCtrl">
+    <p style="text-align: right;"><span style="font-weight: bold;">23-01-2016</span></p>
+    <br>
+    <br>
+    <table style="width: 100%;" border="0">
+      <tbody>
+        <tr>
+          <td style="width: 127.617px;"><span style="font-weight: bold;">Nro.
+              Pedido:<br>
+            </span> </td>
+            <td style="width: 170.483px;"><span style="font-weight: bold;">{{getPedidoSeleccionado().idPedido}}<br>
+            </span> </td>
+          <td style="width: 81.483px;"><span style="font-weight: bold;">Cliente:<br>
+            </span> </td>
+            <td colspan="3" rowspan="1" style="height: 45px;"><span style="font-weight: bold;">{{getPedidoSeleccionado().idCliente.cliente}}</span><span style="font-weight: bold;"></span> </td>
+        </tr>
+        <tr>
+          <td><span style="font-weight: bold;">Estado:</span><br>
+          </td>
+          <td>COBRO PARCIAL<br>
+          </td>
+          <td><span style="font-weight: bold;">Fecha:</span><br>
+          </td>
+          <td>26-12-2016<br>
+          </td>
+          <td style="text-align: right;"><span style="font-weight: bold;">Total:
+              $<br>
+            </span> </td>
+          <td><br>
+          </td>
+        </tr>
+        <tr>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+          <td style="text-align: right;"><span style="font-weight: bold;">Saldo:
+              $</span><br>
+          </td>
+          <td><br>
+          </td>
+        </tr>
+        <tr>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+          <td style="width: 173.467px;"><br>
+          </td>
+          <td style="text-align: right; width: 139.483px;"><span style="font-weight: bold;">Último
+              Cobro:</span><br>
+          </td>
+          <td style="width: 452.467px;"><br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <table style="width: 100%" border="0">
+      <thead>
+        <tr>
+          <th> Producto </th>
+          <th> Cantidad </th>
+          <th> Precio $ </th>
+          <th> Subtotal $ </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+          <td><br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    
+  </body>
+</html>
