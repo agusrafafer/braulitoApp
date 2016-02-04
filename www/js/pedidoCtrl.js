@@ -499,7 +499,7 @@ function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pe
     };
     
     $scope.imprimirReportePDF = function() {
-        $window.open(wsFactory.urlImpReporte + "?idPedido=" + pedidoFactory.seleccionado.idPedido, "_blank");
+        $window.open(wsFactory.urlImpReporte + "?idPedido=" + pedidoFactory.seleccionado.idPedido, "_system");
     };
 
 
