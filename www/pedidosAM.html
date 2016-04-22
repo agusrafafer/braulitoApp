@@ -17,49 +17,14 @@
                 Pedido ${{getPedidoSeleccionado().estado === 'PRESUPUESTO' ? getTotalPedido() : getPedidoSeleccionado().total}}
             </div>
             <div class="right">
-                <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && frmPedidoAM.$valid && (getPedidoSeleccionado().estado !== 'COBRADO')}}"
-                                    ng-disabled="!frmPedidoAM.$valid"
-                                    ng-click="dialogPago.show()">
-                    <ons-icon icon="ion-social-usd" 
+                <ons-toolbar-button id="idLnkVerMenuDerechoSup"
+                                    ng-click="verMenuDerechoSupPedidoPop()">
+                    <ons-icon icon="ion-android-more-vertical" 
                               fixed-width="false" 
                               style="vertical-align: -4px;">
-                    </ons-icon>
-                </ons-toolbar-button>
-
-                <ons-toolbar-button ng-show="{{getPedidoSeleccionado().idPedido !== 0 && !frmPedidoAM.$valid}}"
-                                    ng-disabled="!frmPedidoAM.$valid">
-                    <ons-icon icon="ion-social-usd" 
-                              fixed-width="false" 
-                              style="vertical-align: -4px;">
-                    </ons-icon>
-                </ons-toolbar-button>
-
-                <ons-toolbar-button ng-click="validarEdicion()"
-                                    ng-show="{{frmPedidoAM.$valid && (getPedidoSeleccionado().estado === 'PRESUPUESTO')}}">
-                    <ons-icon icon="ion-checkmark-round" 
-                              fixed-width="false" 
-                              style="vertical-align: -4px;">
-
-                    </ons-icon>
-                </ons-toolbar-button>
-                <ons-toolbar-button ng-show="!frmPedidoAM.$valid"
-                                    ng-disabled="!frmPedidoAM.$valid">
-                    <ons-icon icon="ion-checkmark-round" 
-                              fixed-width="false" 
-                              style="vertical-align: -4px;">
-
-                    </ons-icon>
-                </ons-toolbar-button>
-                <ons-toolbar-button ng-click="eliminar()"
-                                    ng-show="{{getPedidoSeleccionado().idPedido !== 0}}">
-                    <ons-icon icon="ion-trash-a" 
-                              fixed-width="false" 
-                              style="vertical-align: -4px;">
-
                     </ons-icon>
                 </ons-toolbar-button>
             </div>
-
         </ons-toolbar>
 
         <div style="margin: 10px;" ng-show="{{getClienteSel() === ''}}">
@@ -76,7 +41,7 @@
                 <ons-row>
                     <ons-col>
                         <div class="name">
-                            {{getClienteSel().cliente}}
+                            {{getClienteSel().cliente}} <span class="labelito labelito-{{(getClienteSel().idTipoCliente.tipo === 'Bueno') ? 'success' : (getClienteSel().idTipoCliente.tipo === 'Reg') ? 'warning' : 'danger'}}">&nbsp;</span>
                         </div>
                         <div class="location">
                             <i class="fa fa-map-marker"></i> {{getClienteSel().domicilio}}
@@ -88,7 +53,7 @@
                             </div>
                         </div>
                         <div class="desc">
-                            <span class="labelito labelito-{{(getClienteSel().idTipoCliente.tipo === 'Bueno') ? 'success' : (getClienteSel().idTipoCliente.tipo === 'Reg') ? 'warning' : 'danger'}}"> {{getClienteSel().idTipoCliente.tipo}}</span>
+
                         </div>
                     </ons-col>
                     <ons-col width="40px" ng-show="{{getPedidoSeleccionado().estado === 'PRESUPUESTO'}}">
@@ -200,5 +165,67 @@
             </p>
         </ons-dialog>
 
+
+
+        <ons-dialog cancelable="true" var="dialogOpciones">
+            <ons-toolbar inline>
+                <div class="center">
+                    <b>Opciones</b>
+                </div>
+            </ons-toolbar>
+
+            <ons-list ng-controller="pedidoCtrl" style="text-align: center">
+                <ons-list-item ng-show="{{getPedidoSeleccionado().idPedido !== 0 && frmPedidoAM.$valid && (getPedidoSeleccionado().estado !== 'COBRADO')}}"
+                               ng-disabled="!frmPedidoAM.$valid"
+                               ng-click="dialogOpciones.hide();
+                                   dialogPago.show();"
+                                   modifier="tappable">
+                    <ons-icon icon="ion-social-usd" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+                    </ons-icon>
+                    Cobrar
+                </ons-list-item>
+                <ons-list-item ng-show="{{getPedidoSeleccionado().idPedido !== 0 && !frmPedidoAM.$valid}}"
+                               ng-disabled="!frmPedidoAM.$valid"
+                               modifier="tappable">
+                    <ons-icon icon="ion-social-usd" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+                    </ons-icon>
+                    Cobrar
+                </ons-list-item>
+                <ons-list-item ng-click="dialogOpciones.hide();validarEdicion()"
+                               ng-show="{{frmPedidoAM.$valid && (getPedidoSeleccionado().estado === 'PRESUPUESTO')}}"
+                               modifier="tappable">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                    Guardar
+                </ons-list-item>
+                <ons-list-item ng-show="!frmPedidoAM.$valid"
+                               ng-disabled="!frmPedidoAM.$valid"
+                               modifier="tappable">
+                    <ons-icon icon="ion-checkmark-round" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                    Guardar
+                </ons-list-item>
+                <ons-list-item ng-click="dialogOpciones.hide();eliminar()"
+                               ng-show="{{getPedidoSeleccionado().idPedido !== 0}}"
+                               modifier="tappable">
+                    <ons-icon icon="ion-trash-a" 
+                              fixed-width="false" 
+                              style="vertical-align: -4px;">
+
+                    </ons-icon>
+                    Eliminar
+                </ons-list-item>
+            </ons-list>
+        </ons-dialog>
     </form>
 </ons-page>

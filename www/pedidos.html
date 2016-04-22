@@ -3,7 +3,7 @@
         <div class="left">
             <ons-toolbar-button ng-click="app.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
         </div>
-        <div class="center">Pedidos</div>
+        <div class="center">Pedidos - Total: ${{getTotalPedidosConsulta()}}</div>
         <div class="right">
             <ons-toolbar-button ng-click="pedidos()">
                 <ons-icon icon="ion-loop" 
@@ -44,7 +44,7 @@
                         {{ped.idCliente.cliente}}
                     </div>
                     <div class="location">
-                        <i class="fa fa-usd"></i> {{getPedidoSeleccionado().estado === 'PRESUPUESTO' ? getTotalPedido() : ped.total}}
+                        <i class="fa fa-usd"></i> {{ped.total}}
                         <div style="margin-top: 5px;">
                             Estado: {{ped.estado}}
                         </div>

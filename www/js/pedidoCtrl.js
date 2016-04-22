@@ -95,7 +95,15 @@ function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pe
 
     $scope.getPedidos = function() {
         return pedidoFactory.items;
+    };
 
+    $scope.getTotalPedidosConsulta = function() {
+        var total = 0;
+        for (var i = 0; i < pedidoFactory.items.length; i++) {
+            total += pedidoFactory.items[i].total;
+        }
+        total = total.toFixed(2);
+        return total;
     };
 
     $scope.getPedidoSeleccionado = function() {
@@ -503,6 +511,12 @@ function pedidoCtrl($scope, usuarioFactory, productoFactory, productoService, pe
         $window.open(urlEncoded, '_blank', 'location = yes, EnableViewPortScale = yes');
     };
 
+    $scope.verMenuDerechoSupPedidoPop = function() {
+//        $scope.ons.createPopover('popover.html').then(function(popover) {
+//            popover.show('#idLnkVerMenuDerechoSup');
+//        });
+dialogOpciones.show();
+    };
 
 }
 
