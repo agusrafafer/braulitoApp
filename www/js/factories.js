@@ -74,8 +74,8 @@ Onsen.factory('wsFactory', function() {
     return {
         url: "http://braulito-agura.rhcloud.com/braulito/webresources",
         urlImpReporte: "http://braulito-agura.rhcloud.com/braulito/ImpresorReporte"
-//        url: "http://localhost:8084/braulito/webresources",
-//        urlImpReporte: "http://localhost:8084/braulito/ImpresorReporte"
+        //url: "http://localhost:8084/braulito/webresources",
+        //urlImpReporte: "http://localhost:8084/braulito/ImpresorReporte"
     };
 });
 

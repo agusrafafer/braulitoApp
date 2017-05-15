@@ -1,21 +1,31 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.agura.braulito" 
-        version="0.0.1" 
+<?xml version='1.0' encoding='utf-8' standalone="no"?>
+<widget id="com.agura.daleBraulio"  
         xmlns="http://www.w3.org/ns/widgets" 
         xmlns:cdv="http://cordova.apache.org/ns/1.0"
-        xmlns:gap = "http://phonegap.com/ns/1.0">
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        version="0.0.1" 
+        versionCode="001" 
+        android-versionCode="100">
     <name>Braulito App</name>
     <description>
         App para toma de pedidos en linea.
     </description>
-    <author email="agusrafafer@gmail.com" href="http://agura.com.ar">
+    <author email="contactenos@aguramail.com.ar" href="http://www.agura.com.ar">
         Agura Ing.
     </author>
     <access origin="*"/>
     <content src="index.html" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm" version="1.0.0" />
+    <preference name="permissions" value="none" />
+    <preference name="KeepRunning" value="true" /> 
+    <preference name="exit-on-suspend" value="false" /> 
+    <preference name="SplashScreen" value="screen"/>
+    <preference name="SplashScreenDelay" value="4000" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
     <preference name="fullscreen" value="false" /> 
     <preference name="android-windowSoftInputMode" value="adjustResize|stateHidden" />
+    <preference name="orientation" value="portrait" />
     <allow-navigation href="http://*/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -40,12 +50,10 @@
     </feature>
     <feature name="InAppBrowser" />
     
-    <gap:plugin name="org.apache.cordova.inappbrowser" source="npm" version="0.6.0" />
-    <gap:plugin name="org.apache.cordova.splashscreen" />
+    <gap:plugin name="cordova-plugin-inappbrowser" source="npm" />
+    <gap:plugin name="cordova-plugin-splashscreen" source="npm"/>
+    <!--<gap:plugin name="de.appplant.cordova.plugin.background-mode" version="0.6.3" />-->
     
-    <preference name="SplashScreen" value="screen"/>
-    <preference name="SplashScreenDelay" value="4000" />
-    <preference name="show-splash-screen-spinner" value="true" />
     
     <icon src="mdpi.png" platform="android" qualifier="mdpi" />
     <icon src="hdpi.png" platform="android" qualifier="hdpi" />
